@@ -311,36 +311,36 @@ if __name__ == "__main__":
 
 
     # in case thet control set speed and resume driving fucntion doest work
-    def drive(car,camera,mpu,model_trt,yolo_model,config):
-        while True:
-            image = camera,read()
+   # def drive(car,camera,mpu,model_trt,yolo_model,config):
+   #     while True:
+   #         image = camera,read()
 
-            road_center, objects = infer(image,midel_trt,yolo_model)
-            car.throttle,car.steering = control_policy(road_center,object,config)
-    def setup(config):
-        yolo_model = yolov5.road.load('yolov5s.pt')
-        yolo_model.half()
+   #         road_center, objects = infer(image,midel_trt,yolo_model)
+   #         car.throttle,car.steering = control_policy(road_center,object,config)
+   # def setup(config):
+   #     yolo_model = yolov5.road.load('yolov5s.pt')
+   #     yolo_model.half()
 
-        return car, camera,mpu,model_trt,yolo_model
+   #     return car, camera,mpu,model_trt,yolo_model
 
-    def infer(image,midel_trt,yolo_model = None):
-        image = preprocess(image).half()
-        objects = yolo_model(image,size = IMG_SIZE)[0]
-        objects = non_max_suppression(objects,yolo_model.conf,iou_thres = yoloyolo_model)
-        output = model_trt(image).squeeze()
-        x,y = float(output[0]),float(output[1])
+   # def infer(image,midel_trt,yolo_model = None):
+   #     image = preprocess(image).half()
+   #     objects = yolo_model(image,size = IMG_SIZE)[0]
+   #     objects = non_max_suppression(objects,yolo_model.conf,iou_thres = yoloyolo_model)
+   #     output = model_trt(image).squeeze()
+   #     x,y = float(output[0]),float(output[1])
 
-        return(x,y),objects
-    def control_policy(road_center,objects,config):
-        x, y = road_center
-        steering = x * STEERING_GAIN
-        throttle = config.throttle * THROTTLE_GAIN
+   #     return(x,y),objects
+   # def control_policy(road_center,objects,config):
+   #     x, y = road_center
+   #     steering = x * STEERING_GAIN
+   #     throttle = config.throttle * THROTTLE_GAIN
         # break when stop sign is deceted
-        if objects is not None:
-            for obj in obj[0]:
-                class_idx = obj[-1]
+   #     if objects is not None:
+   #         for obj in obj[0]:
+   #             class_idx = obj[-1]
 
-                if class_idx == 11: #stop StopSign
-                    throttle = -1 + THROTTLE_GAIN
-        return throttle,steering
+   #             if class_idx == 11: #stop StopSign
+   #                 throttle = -1 + THROTTLE_GAIN
+   #     return throttle,steering
 
